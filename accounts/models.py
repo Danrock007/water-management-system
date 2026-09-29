@@ -1,38 +1,39 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
-# Create your models here.
 
 class User(AbstractUser):
 
     class Role(models.TextChoices):
-        ADMINISTRATOR = "ADMINISTRATOR", "Administrator"
-        MANAGER = "MANAGER", "Manager"
-        SALES_OFFICER = "SALES_OFFICER", "Sales Officer"
-        WAREHOUSE_OFFICER = "WAREHOUSE_OFFICER", "Warehouse Officer"
-        ACCOUNTANT = "ACCOUNTANT", "Accountant"
-        DRIVER = "DRIVER", "Driver"
+        ADMINISTRATOR = 'ADMINISTRATOR', 'Administrator'
+        MANAGER = 'MANAGER', 'Manager'
+        SALES_OFFICER = 'SALES_OFFICER', 'Sales Officer'
+        WAREHOUSE_OFFICER = 'WAREHOUSE_OFFICER', 'Warehouse Officer'
+        ACCOUNTANT = 'ACCOUNTANT', 'Accountant'
+        DRIVER = 'DRIVER', 'Driver'
 
     role = models.CharField(
         max_length=30,
         choices=Role.choices,
-        default=Role.SALES_OFFICER,
+        default=Role.SALES_OFFICER
     )
 
-    phone = models.CharField(
+    phone_number = models.CharField(
         max_length=20,
-        blank=True,
+        blank=True
     )
 
     employee_id = models.CharField(
-        max_length=30,
+        max_length=50,
         unique=True,
         null=True,
-        blank=True,
+        blank=True
     )
 
     is_active = models.BooleanField(default=True)
 
-    def __str__(self):
-        return f"{self.username} - {self.role}"
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.username} - {self.get_role_display()}"
