@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Customer , Order
+from .models import Customer , Order , Invoice
 
 
 @admin.register(Customer)
@@ -26,8 +26,6 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
     
-
-
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
@@ -47,4 +45,26 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = (
         'order_number',
         'customer__name',
+    )
+
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = (
+        'invoice_number',
+        'order',
+        'amount',
+        'status',
+        'due_date',
+        'is_active',
+        'created_at',
+    )
+
+    list_filter = (
+        'status',
+        'is_active',
+    )
+
+    search_fields = (
+        'invoice_number',
+        'order__order_number',
     )

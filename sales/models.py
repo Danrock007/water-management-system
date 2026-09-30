@@ -43,7 +43,6 @@ class Customer(models.Model):
         return self.name
 
 
-
 class Order(models.Model):
 
     class Status(models.TextChoices):
@@ -93,3 +92,57 @@ class Order(models.Model):
 
     def __str__(self):
         return self.order_number
+
+
+class Invoice(models.Model):
+
+    class Status(models.TextChoices):
+        PENDING = 'PENDING', 'Pending'
+        PAID = 'PAID', 'Paid'
+        CANCELLED = 'CANCELLED', 'Cancelled'
+
+    order = models.OneToOneField(
+        Order,
+        on_delete=models.PROTECT,
+        related_name='invoice'
+    )
+
+    invoice_number = models.CharField(
+        max_length=50,
+        unique=True
+    )
+
+    amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING
+    )
+
+    due_date = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    notes = models.TextField(
+        blank=True
+    )
+
+    is_active = models.BooleanField(
+        default=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return self.invoice_number

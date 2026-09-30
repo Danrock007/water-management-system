@@ -1,14 +1,38 @@
 from rest_framework import serializers
-from .models import Customer, Order , Invoice
+
+from .models import Product, Supplier, StockTransaction
 
 
-class CustomerSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Customer
+        model = Product
         fields = [
             'id',
-            'customer_type',
+            'name',
+            'product_type',
+            'description',
+            'unit_price',
+            'quantity_in_stock',
+            'reorder_level',
+            'is_active',
+            'created_at',
+            'updated_at',
+        ]
+
+        read_only_fields = [
+            'id',
+            'created_at',
+            'updated_at',
+        ]
+
+
+class SupplierSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Supplier
+        fields = [
+            'id',
             'name',
             'phone_number',
             'email',
@@ -25,48 +49,21 @@ class CustomerSerializer(serializers.ModelSerializer):
         ]
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class StockTransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Order
+        model = StockTransaction
         fields = [
             'id',
-            'customer',
-            'order_number',
-            'status',
-            'total_amount',
+            'product',
+            'transaction_type',
+            'quantity',
+            'reference',
             'notes',
-            'is_active',
             'created_at',
-            'updated_at',
         ]
 
         read_only_fields = [
             'id',
             'created_at',
-            'updated_at',
-        ]
-
-
-class InvoiceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Invoice
-        fields = [
-            'id',
-            'order',
-            'invoice_number',
-            'amount',
-            'status',
-            'due_date',
-            'notes',
-            'is_active',
-            'created_at',
-            'updated_at',
-        ]
-
-        read_only_fields = [
-            'id',
-            'created_at',
-            'updated_at',
         ]
